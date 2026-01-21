@@ -1,7 +1,23 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  ArrowLeft, 
+  Users, 
+  Linkedin, 
+  Loader2, 
+  Calendar, 
+  FileText, 
+  Download, 
+  FileSpreadsheet,
+  FileJson,
+  Vote,
+  User,
+  Lock
+} from 'lucide-react';
 
 export default function EditTeam() {
   const { data: session, status } = useSession();
@@ -13,6 +29,7 @@ export default function EditTeam() {
   const [teamDescription, setTeamDescription] = useState('');
   const [votingDeadline, setVotingDeadline] = useState('');
   const [candidates, setCandidates] = useState([]);
+  const [votersCount, setVotersCount] = useState(0);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -36,25 +53,50 @@ export default function EditTeam() {
     }
     setTeamName(data.team.name);
     setTeamDescription(data.team.description || '');
-    // Format deadline for datetime-local input
     if (data.team.deadline) {
       const d = new Date(data.team.deadline);
       const formatted = d.toISOString().slice(0, 16);
       setVotingDeadline(formatted);
     }
     setCandidates(data.team.candidates || []);
+    setVotersCount(data.team.voteCount || 0);
     setLoading(false);
   }
 
+  const downloadVotersList = async (format = 'csv') => {
+    try {
+      const url = `/api/teams/${slug}/download-voters?format=${format}`;
+      
+      if (format === 'json') {
+        const res = await fetch(url);
+        const data = await res.json();
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `voters-${slug}-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(downloadUrl);
+      } else {
+        window.location.href = url;
+      }
+    } catch (err) {
+      console.error('Download failed:', err);
+      alert('Failed to download voters list');
+    }
+  };
+
   function updateCandidate(id, field, value) {
-    setCandidates(candidates.map(c => 
+    setCandidates(candidates.map(c =>
       c.id === id ? { ...c, [field]: value } : c
     ));
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    
+
     const validCandidates = candidates.filter(c => c.name && c.linkedin);
     if (validCandidates.length !== 2) {
       alert('Please fill in details for exactly 2 candidates (name and LinkedIn required)');
@@ -84,283 +126,369 @@ export default function EditTeam() {
     router.push('/candidate/dashboard');
   }
 
-  const styles = {
-    container: {
-      minHeight: '100vh',
-      backgroundColor: '#FDF8F3',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    },
-    header: {
-      backgroundColor: '#fff',
-      borderBottom: '1px solid #e8e0d8',
-      padding: '16px 40px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    backLink: {
-      color: '#666',
-      textDecoration: 'none',
-      fontSize: 14,
-      display: 'flex',
-      alignItems: 'center',
-      gap: 8,
-    },
-    main: {
-      maxWidth: 700,
-      margin: '0 auto',
-      padding: '40px',
-    },
-    pageTitle: {
-      fontSize: 32,
-      fontWeight: 700,
-      color: '#1a1a1a',
-      marginBottom: 8,
-    },
-    pageSubtitle: {
-      color: '#666',
-      marginBottom: 40,
-    },
-    section: {
-      backgroundColor: '#fff',
-      border: '1px solid #e8e0d8',
-      borderRadius: 16,
-      padding: 32,
-      marginBottom: 24,
-    },
-    sectionTitle: {
-      fontSize: 18,
-      fontWeight: 600,
-      color: '#1a1a1a',
-      marginBottom: 20,
-    },
-    inputGroup: {
-      marginBottom: 20,
-    },
-    label: {
-      display: 'block',
-      marginBottom: 8,
-      color: '#444',
-      fontSize: 14,
-      fontWeight: 500,
-    },
-    input: {
-      width: '100%',
-      padding: '14px 16px',
-      backgroundColor: '#fafafa',
-      border: '1px solid #e0d8d0',
-      borderRadius: 10,
-      fontSize: 15,
-      color: '#1a1a1a',
-      boxSizing: 'border-box',
-      outline: 'none',
-    },
-    slugInfo: {
-      marginTop: 8,
-      fontSize: 13,
-      color: '#888',
-    },
-    candidateCard: {
-      backgroundColor: '#fafafa',
-      border: '1px solid #e8e0d8',
-      borderRadius: 12,
-      padding: 20,
-      marginBottom: 16,
-    },
-    candidateHeader: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    candidateNumber: {
-      fontSize: 14,
-      fontWeight: 600,
-      color: '#1a1a1a',
-    },
-    removeBtn: {
-      background: 'none',
-      border: 'none',
-      color: '#dc2626',
-      cursor: 'pointer',
-      fontSize: 14,
-    },
-    addCandidateBtn: {
-      width: '100%',
-      padding: '14px 20px',
-      backgroundColor: '#fff',
-      border: '2px dashed #e0d8d0',
-      borderRadius: 10,
-      fontSize: 15,
-      color: '#888',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 8,
-    },
-    actions: {
-      display: 'flex',
-      gap: 16,
-      justifyContent: 'flex-end',
-    },
-    cancelBtn: {
-      padding: '14px 24px',
-      backgroundColor: '#fff',
-      border: '1px solid #e0d8d0',
-      borderRadius: 10,
-      fontSize: 15,
-      color: '#666',
-      cursor: 'pointer',
-      textDecoration: 'none',
-    },
-    submitBtn: {
-      padding: '14px 32px',
-      backgroundColor: '#1a1a1a',
-      border: 'none',
-      borderRadius: 10,
-      fontSize: 15,
-      fontWeight: 600,
-      color: '#fff',
-      cursor: 'pointer',
-    },
-    loadingContainer: {
-      minHeight: '100vh',
-      backgroundColor: '#FDF8F3',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  };
-
   if (status === 'loading' || loading) {
-    return <div style={styles.loadingContainer}>Loading...</div>;
+    return (
+      <>
+        <Head>
+          <title>Edit Campaign - VotePlatform</title>
+        </Head>
+        <div className="loading-container" style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+          <div className="loading-spinner"></div>
+        </div>
+      </>
+    );
   }
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <Link href="/candidate/dashboard" style={styles.backLink}>
-          ← Back to Dashboard
-        </Link>
-      </header>
+    <>
+      <Head>
+        <title>Edit Campaign - VotePlatform</title>
+      </Head>
 
-      <main style={styles.main}>
-        <h1 style={styles.pageTitle}>Edit Team</h1>
-        <p style={styles.pageSubtitle}>Update your team details and candidates</p>
-
-        <form onSubmit={handleSubmit}>
-          <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>Team Details</h2>
+      <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+        {/* Header */}
+        <header className="navbar">
+          <div className="navbar-inner">
+            <Link
+              href="/candidate/dashboard"
+              className="btn-ghost"
+              style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+            >
+              <ArrowLeft size={16} />
+              Back to Dashboard
+            </Link>
             
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Team Name</label>
-              <input
-                type="text"
-                value={teamName}
-                onChange={(e) => setTeamName(e.target.value)}
-                placeholder="e.g., Board of Directors Election"
-                style={styles.input}
-                required
-              />
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>URL Slug</label>
-              <input
-                type="text"
-                value={slug}
-                disabled
-                style={{ ...styles.input, backgroundColor: '#eee', color: '#888' }}
-              />
-              <p style={styles.slugInfo}>
-                URL slug cannot be changed after creation
-              </p>
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Team Description</label>
-              <textarea
-                value={teamDescription}
-                onChange={(e) => setTeamDescription(e.target.value)}
-                placeholder="Describe what this election/voting is about..."
-                style={{ ...styles.input, minHeight: 100, resize: 'vertical' }}
-                rows={4}
-              />
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Voting Deadline (Optional)</label>
-              <input
-                type="datetime-local"
-                value={votingDeadline}
-                onChange={(e) => setVotingDeadline(e.target.value)}
-                style={styles.input}
-              />
-              <p style={styles.slugInfo}>
-                Leave empty for no deadline. Votes cannot be submitted after this time.
-              </p>
-            </div>
+            <Link href="/" className="navbar-brand">
+              <div className="navbar-logo">
+                <Vote size={18} color="white" />
+              </div>
+              <span>VotePlatform</span>
+            </Link>
+            
+            <div style={{ width: 150 }}></div>
           </div>
+        </header>
 
-          <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>Candidates (2 Required)</h2>
-            <p style={{ color: '#666', fontSize: 14, marginBottom: 20 }}>Teams must have exactly 2 candidates</p>
-            
-            {candidates.map((candidate, index) => (
-              <div key={candidate.id} style={styles.candidateCard}>
-                <div style={styles.candidateHeader}>
-                  <span style={styles.candidateNumber}>Candidate {index + 1}</span>
+        {/* Main */}
+        <main className="container" style={{ maxWidth: 720, paddingTop: 40, paddingBottom: 80 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <h1 style={{ 
+              fontSize: 28, 
+              fontWeight: 700, 
+              marginBottom: 8,
+              fontFamily: 'Space Grotesk, Sora, sans-serif',
+            }}>
+              Edit Campaign
+            </h1>
+            <p style={{ color: 'var(--text-tertiary)', marginBottom: 32 }}>
+              Update your campaign details and candidates
+            </p>
+
+            <form onSubmit={handleSubmit}>
+              {/* Team Details Section */}
+              <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+                  <div style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 'var(--radius-lg)',
+                    background: 'rgba(139, 92, 246, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <FileText size={20} style={{ color: 'var(--brand-secondary)' }} />
+                  </div>
+                  <h2 style={{ fontSize: 18, fontWeight: 600, fontFamily: 'Space Grotesk, Sora, sans-serif' }}>
+                    Campaign Details
+                  </h2>
                 </div>
 
-                <div style={styles.inputGroup}>
-                  <label style={styles.label}>Name</label>
-                  <input
-                    type="text"
-                    value={candidate.name}
-                    onChange={(e) => updateCandidate(candidate.id, 'name', e.target.value)}
-                    placeholder="Full name"
-                    style={styles.input}
-                    required
-                  />
-                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                  <div>
+                    <label className="input-label">Campaign Name</label>
+                    <input
+                      type="text"
+                      value={teamName}
+                      onChange={(e) => setTeamName(e.target.value)}
+                      placeholder="e.g., Board of Directors Election"
+                      className="input"
+                      required
+                    />
+                  </div>
 
-                <div style={styles.inputGroup}>
-                  <label style={styles.label}>Bio / Description</label>
-                  <input
-                    type="text"
-                    value={candidate.bio}
-                    onChange={(e) => updateCandidate(candidate.id, 'bio', e.target.value)}
-                    placeholder="Brief description or qualifications"
-                    style={styles.input}
-                  />
-                </div>
+                  <div>
+                    <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Lock size={12} />
+                      URL Slug
+                    </label>
+                    <input
+                      type="text"
+                      value={slug}
+                      disabled
+                      className="input"
+                      style={{ 
+                        background: 'var(--bg-secondary)',
+                        color: 'var(--text-muted)',
+                        cursor: 'not-allowed',
+                      }}
+                    />
+                    <p style={{ marginTop: 8, fontSize: 13, color: 'var(--text-muted)' }}>
+                      URL slug cannot be changed after creation
+                    </p>
+                  </div>
 
-                <div style={styles.inputGroup}>
-                  <label style={styles.label}>LinkedIn Profile URL</label>
-                  <input
-                    type="url"
-                    value={candidate.linkedin}
-                    onChange={(e) => updateCandidate(candidate.id, 'linkedin', e.target.value)}
-                    placeholder="https://linkedin.com/in/profile"
-                    style={styles.input}
-                    required
-                  />
+                  <div>
+                    <label className="input-label">
+                      Description
+                      <span style={{ color: 'var(--text-muted)', fontWeight: 400, marginLeft: 8 }}>(optional)</span>
+                    </label>
+                    <textarea
+                      value={teamDescription}
+                      onChange={(e) => setTeamDescription(e.target.value)}
+                      placeholder="Describe what this voting is about..."
+                      rows={3}
+                      className="input"
+                      style={{ resize: 'none', minHeight: 100 }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Calendar size={14} />
+                      Voting Deadline
+                      <span style={{ color: 'var(--text-muted)', fontWeight: 400, marginLeft: 4 }}>(optional)</span>
+                    </label>
+                    <input
+                      type="datetime-local"
+                      value={votingDeadline}
+                      onChange={(e) => setVotingDeadline(e.target.value)}
+                      className="input"
+                    />
+                    <p style={{ marginTop: 8, fontSize: 13, color: 'var(--text-muted)' }}>
+                      Leave empty for no deadline
+                    </p>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
 
-          <div style={styles.actions}>
-            <Link href="/candidate/dashboard" style={styles.cancelBtn}>
-              Cancel
-            </Link>
-            <button type="submit" disabled={saving} style={styles.submitBtn}>
-              {saving ? 'Saving...' : 'Save Changes'}
-            </button>
-          </div>
-        </form>
-      </main>
-    </div>
+              {/* Candidates Section */}
+              <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+                  <div style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 'var(--radius-lg)',
+                    background: 'rgba(6, 182, 212, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <Users size={20} style={{ color: 'var(--brand-accent)' }} />
+                  </div>
+                  <div>
+                    <h2 style={{ fontSize: 18, fontWeight: 600, fontFamily: 'Space Grotesk, Sora, sans-serif' }}>
+                      Candidates
+                    </h2>
+                    <p style={{ fontSize: 13, color: 'var(--text-tertiary)' }}>
+                      Campaigns require exactly 2 candidates
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {candidates.map((candidate, index) => (
+                    <div
+                      key={candidate.id}
+                      style={{
+                        padding: 20,
+                        borderRadius: 'var(--radius-lg)',
+                        background: 'var(--bg-secondary)',
+                        border: '1px solid var(--border-subtle)',
+                      }}
+                    >
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: 8,
+                        marginBottom: 16,
+                        paddingBottom: 12,
+                        borderBottom: '1px solid var(--border-subtle)',
+                      }}>
+                        <div style={{
+                          width: 28,
+                          height: 28,
+                          borderRadius: 'var(--radius-md)',
+                          background: index === 0 
+                            ? 'rgba(99, 102, 241, 0.15)' 
+                            : 'rgba(6, 182, 212, 0.15)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                          <User size={14} style={{ 
+                            color: index === 0 ? 'var(--brand-primary)' : 'var(--brand-accent)' 
+                          }} />
+                        </div>
+                        <span style={{ 
+                          fontSize: 13, 
+                          fontWeight: 600,
+                          color: index === 0 ? 'var(--brand-primary)' : 'var(--brand-accent)',
+                        }}>
+                          Candidate {index + 1}
+                        </span>
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                        <div>
+                          <label className="input-label" style={{ fontSize: 12 }}>Name</label>
+                          <input
+                            type="text"
+                            value={candidate.name}
+                            onChange={(e) => updateCandidate(candidate.id, 'name', e.target.value)}
+                            placeholder="Full name"
+                            className="input"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="input-label" style={{ fontSize: 12 }}>Bio / Description</label>
+                          <input
+                            type="text"
+                            value={candidate.bio}
+                            onChange={(e) => updateCandidate(candidate.id, 'bio', e.target.value)}
+                            placeholder="Brief description or qualifications"
+                            className="input"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="input-label" style={{ fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
+                            <Linkedin size={12} />
+                            LinkedIn Profile URL
+                          </label>
+                          <input
+                            type="url"
+                            value={candidate.linkedin}
+                            onChange={(e) => updateCandidate(candidate.id, 'linkedin', e.target.value)}
+                            placeholder="https://linkedin.com/in/profile"
+                            className="input"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Download Voters Section */}
+              <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+                <div style={{ 
+                  display: 'flex', 
+                  flexWrap: 'wrap',
+                  alignItems: 'center', 
+                  justifyContent: 'space-between', 
+                  gap: 16,
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: 'var(--radius-lg)',
+                      background: 'var(--success-bg)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                      <Download size={20} style={{ color: 'var(--success)' }} />
+                    </div>
+                    <div>
+                      <h2 style={{ fontSize: 16, fontWeight: 600, fontFamily: 'Space Grotesk, Sora, sans-serif' }}>
+                        Download Voters List
+                      </h2>
+                      <p style={{ fontSize: 13, color: 'var(--text-tertiary)' }}>
+                        {votersCount > 0
+                          ? `${votersCount} voter${votersCount !== 1 ? 's' : ''} have participated`
+                          : 'No votes yet for this campaign'
+                        }
+                      </p>
+                    </div>
+                  </div>
+
+                  {votersCount > 0 && (
+                    <div style={{ display: 'flex', gap: 12 }}>
+                      <button
+                        type="button"
+                        onClick={() => downloadVotersList('csv')}
+                        className="btn-primary"
+                        style={{ 
+                          padding: '10px 16px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6,
+                          fontSize: 13,
+                        }}
+                      >
+                        <FileSpreadsheet size={14} />
+                        CSV
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => downloadVotersList('json')}
+                        className="btn-secondary"
+                        style={{ 
+                          padding: '10px 16px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6,
+                          fontSize: 13,
+                        }}
+                      >
+                        <FileJson size={14} />
+                        JSON
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div style={{ display: 'flex', gap: 16, justifyContent: 'flex-end' }}>
+                <Link href="/candidate/dashboard" className="btn-secondary" style={{ padding: '14px 24px' }}>
+                  Cancel
+                </Link>
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="btn-gradient"
+                  style={{ 
+                    width: 'auto',
+                    padding: '14px 32px',
+                    background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  {saving ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Changes'
+                  )}
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </main>
+      </div>
+    </>
   );
 }

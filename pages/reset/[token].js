@@ -1,206 +1,279 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
+import { Lock, Eye, EyeOff, ArrowLeft, Loader2, CheckCircle, ShieldCheck } from 'lucide-react';
 
 export default function Reset() {
   const router = useRouter();
   const { token } = router.query;
   const [loading, setLoading] = useState(false);
-  const [focusedInput, setFocusedInput] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  async function handle(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setLoading(true);
+    setError('');
+    
     const password = e.target.password.value;
     const confirmPassword = e.target.confirmPassword.value;
-    
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      setLoading(false);
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
       return;
     }
 
-    const res = await fetch('/api/auth/reset', { 
-      method: 'POST', 
-      headers: { 'Content-Type': 'application/json' }, 
-      body: JSON.stringify({ token, password }) 
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
+
+    const res = await fetch('/api/auth/reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password })
     });
+    
     const data = await res.json();
     setLoading(false);
-    
+
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
       return;
     }
-    
-    alert('Password reset successfully!');
-    router.push('/login');
+
+    setSuccess(true);
+    setTimeout(() => router.push('/login'), 3000);
   }
 
-  const styles = {
-    container: {
-      minHeight: '100vh',
-      backgroundColor: '#000000',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    },
-    card: {
-      backgroundColor: '#0a0a0a',
-      padding: '48px 40px',
-      borderRadius: '16px',
-      border: '1px solid #222',
-      width: '100%',
-      maxWidth: '420px',
-      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-    },
-    logo: {
-      width: '48px',
-      height: '48px',
-      backgroundColor: '#fff',
-      borderRadius: '12px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: '0 auto 24px',
-      fontSize: '24px',
-    },
-    title: {
-      color: '#ffffff',
-      fontSize: '28px',
-      fontWeight: '700',
-      textAlign: 'center',
-      marginBottom: '8px',
-      letterSpacing: '-0.5px',
-    },
-    subtitle: {
-      color: '#888',
-      fontSize: '15px',
-      textAlign: 'center',
-      marginBottom: '32px',
-    },
-    inputGroup: {
-      marginBottom: '20px',
-    },
-    label: {
-      display: 'block',
-      marginBottom: '8px',
-      color: '#ccc',
-      fontSize: '14px',
-      fontWeight: '500',
-    },
-    input: {
-      width: '100%',
-      padding: '14px 16px',
-      backgroundColor: '#111',
-      border: '1px solid #333',
-      borderRadius: '10px',
-      fontSize: '15px',
-      color: '#fff',
-      boxSizing: 'border-box',
-      transition: 'all 0.2s ease',
-      outline: 'none',
-    },
-    inputFocused: {
-      borderColor: '#fff',
-      backgroundColor: '#0a0a0a',
-    },
-    submitBtn: {
-      width: '100%',
-      padding: '14px 20px',
-      backgroundColor: '#fff',
-      color: '#000',
-      border: 'none',
-      borderRadius: '10px',
-      fontSize: '15px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
-      marginTop: '8px',
-    },
-    submitBtnDisabled: {
-      backgroundColor: '#333',
-      color: '#666',
-      cursor: 'not-allowed',
-    },
-    backLink: {
-      display: 'block',
-      textAlign: 'center',
-      marginTop: '24px',
-      color: '#888',
-      textDecoration: 'none',
-      fontSize: '14px',
-      transition: 'color 0.2s',
-    },
-  };
+  if (success) {
+    return (
+      <>
+        <Head>
+          <title>Password Reset - VotePlatform</title>
+        </Head>
+        <div className="auth-container">
+          <div className="auth-card" style={{ textAlign: 'center' }}>
+            <div style={{
+              width: 64,
+              height: 64,
+              background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+              borderRadius: 20,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 24,
+              boxShadow: '0 10px 40px rgba(34, 197, 94, 0.3)'
+            }}>
+              <CheckCircle size={32} color="white" />
+            </div>
+            <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>
+              Password Reset!
+            </h1>
+            <p style={{ color: '#a3a3a3', fontSize: 15, marginBottom: 24 }}>
+              Redirecting to login...
+            </p>
+            <div style={{
+              width: 40,
+              height: 4,
+              background: 'rgba(255,255,255,0.1)',
+              borderRadius: 2,
+              margin: '0 auto',
+              overflow: 'hidden'
+            }}>
+              <div style={{
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, #06b6d4, #a855f7)',
+                animation: 'progress 3s ease-out forwards'
+              }} />
+            </div>
+          </div>
+        </div>
+        <style jsx>{`
+          @keyframes progress {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+          }
+        `}</style>
+      </>
+    );
+  }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <div style={styles.logo}>🔐</div>
-        <h1 style={styles.title}>Reset Password</h1>
-        <p style={styles.subtitle}>Enter your new password below</p>
+    <>
+      <Head>
+        <title>Reset Password - VotePlatform</title>
+      </Head>
 
-        <form onSubmit={handle}>
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>New Password</label>
-            <input 
-              name="password" 
-              type="password" 
-              required 
-              minLength={6}
-              placeholder="••••••••"
-              style={{
-                ...styles.input,
-                ...(focusedInput === 'password' ? styles.inputFocused : {})
-              }}
-              onFocus={() => setFocusedInput('password')}
-              onBlur={() => setFocusedInput(null)}
-            />
+      <div className="auth-container">
+        <div className="auth-card">
+          {/* Logo */}
+          <div style={{ textAlign: 'center', marginBottom: 32 }}>
+            <div style={{
+              width: 56,
+              height: 56,
+              background: 'linear-gradient(135deg, #06b6d4 0%, #a855f7 100%)',
+              borderRadius: 16,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 24,
+              boxShadow: '0 10px 40px rgba(6, 182, 212, 0.3)'
+            }}>
+              <ShieldCheck size={28} color="white" />
+            </div>
+            <h1 style={{
+              fontSize: 28,
+              fontWeight: 700,
+              marginBottom: 8,
+              letterSpacing: '-0.02em'
+            }}>
+              Reset Password
+            </h1>
+            <p style={{ color: '#a3a3a3', fontSize: 15 }}>
+              Enter your new password below
+            </p>
           </div>
 
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Confirm Password</label>
-            <input 
-              name="confirmPassword" 
-              type="password" 
-              required 
-              minLength={6}
-              placeholder="••••••••"
-              style={{
-                ...styles.input,
-                ...(focusedInput === 'confirm' ? styles.inputFocused : {})
-              }}
-              onFocus={() => setFocusedInput('confirm')}
-              onBlur={() => setFocusedInput(null)}
-            />
-          </div>
-          
-          <button 
-            type="submit" 
-            disabled={loading}
+          {/* Error Message */}
+          {error && (
+            <div className="alert-error">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label className="input-label">New Password</label>
+              <div style={{ position: 'relative' }}>
+                <Lock
+                  size={18}
+                  style={{
+                    position: 'absolute',
+                    left: 14,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: '#737373'
+                  }}
+                />
+                <input
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  minLength={6}
+                  className="input-field"
+                  style={{ paddingLeft: 44, paddingRight: 44 }}
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: 14,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    color: '#737373',
+                    cursor: 'pointer',
+                    padding: 0
+                  }}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Confirm Password</label>
+              <div style={{ position: 'relative' }}>
+                <Lock
+                  size={18}
+                  style={{
+                    position: 'absolute',
+                    left: 14,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: '#737373'
+                  }}
+                />
+                <input
+                  name="confirmPassword"
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  required
+                  minLength={6}
+                  className="input-field"
+                  style={{ paddingLeft: 44, paddingRight: 44 }}
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: 14,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    color: '#737373',
+                    cursor: 'pointer',
+                    padding: 0
+                  }}
+                >
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary"
+              style={{ marginTop: 8 }}
+            >
+              {loading ? (
+                <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                  <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} />
+                  Resetting...
+                </span>
+              ) : (
+                'Reset Password'
+              )}
+            </button>
+          </form>
+
+          <Link
+            href="/login"
             style={{
-              ...styles.submitBtn,
-              ...(loading ? styles.submitBtnDisabled : {})
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 8,
+              marginTop: 24,
+              color: '#737373',
+              fontSize: 14,
+              textDecoration: 'none'
             }}
-            onMouseEnter={(e) => !loading && (e.target.style.backgroundColor = '#e5e5e5')}
-            onMouseLeave={(e) => !loading && (e.target.style.backgroundColor = '#fff')}
           >
-            {loading ? 'Resetting...' : 'Reset Password'}
-          </button>
-        </form>
-
-        <Link 
-          href="/login" 
-          style={styles.backLink}
-          onMouseEnter={(e) => e.target.style.color = '#fff'}
-          onMouseLeave={(e) => e.target.style.color = '#888'}
-        >
-          ← Back to Login
-        </Link>
+            <ArrowLeft size={16} />
+            Back to Login
+          </Link>
+        </div>
       </div>
-    </div>
+
+      <style jsx>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+    </>
   );
 }
