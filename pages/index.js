@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
+import CursorGlow from '../components/CursorTrail';
 import {
   Users,
   CheckCircle2,
@@ -20,6 +21,7 @@ export default function Home() {
   const { data: session, status } = useSession();
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
+  const heroRef = useRef(null);
 
   useEffect(() => {
     async function loadTeams() {
@@ -51,7 +53,10 @@ export default function Home() {
   return (
     <Layout title="Votesy - Professional Voting Platform">
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero" ref={heroRef} style={{ position: 'relative' }}>
+        {/* Cursor Glow Effect */}
+        <CursorGlow containerRef={heroRef} />
+        
         {/* Background Effects */}
         <div style={{
           position: 'absolute',

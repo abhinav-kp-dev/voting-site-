@@ -206,6 +206,9 @@ export default function Layout({ children, title = 'Votesy' }) {
                 </>
               ) : (
                 <>
+                  <Link href="/candidate/signup" className="navbar-link">
+                    Candidate Register
+                  </Link>
                   <Link href="/login" className="navbar-link">
                     Sign In
                   </Link>
@@ -359,6 +362,19 @@ export default function Layout({ children, title = 'Votesy' }) {
                     </>
                   ) : (
                     <>
+                      <Link
+                        href="/candidate/signup"
+                        onClick={() => setMobileMenuOpen(false)}
+                        style={{
+                          display: 'block',
+                          padding: '12px 16px',
+                          fontSize: 15,
+                          color: 'var(--text-secondary)',
+                          borderRadius: 'var(--radius-sm)',
+                        }}
+                      >
+                        Candidate Register
+                      </Link>
                       <Link
                         href="/login"
                         onClick={() => setMobileMenuOpen(false)}
