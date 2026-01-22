@@ -12,7 +12,6 @@ import {
   CheckCircle2, 
   AlertCircle, 
   Users,
-  Vote,
   Trophy,
   X
 } from 'lucide-react';
@@ -145,7 +144,7 @@ export default function TeamPage() {
   const leader = getLeader();
 
   return (
-    <Layout title={`${team.name} - VotePlatform`}>
+    <Layout title={`${team.name} - Votesy`}>
       <div className="container" style={{ paddingTop: 40, paddingBottom: 80 }}>
         {/* Header Actions */}
         <div style={{ 
@@ -292,7 +291,7 @@ export default function TeamPage() {
                 alignItems: 'center',
                 gap: 12,
               }}>
-                <Vote size={20} style={{ color: 'var(--brand-primary)' }} />
+                <CheckCircle2 size={20} style={{ color: 'var(--brand-primary)' }} />
                 Live Results
               </h3>
               <span className="badge badge-primary">

@@ -9,7 +9,7 @@ import {
   Mail, 
   Linkedin, 
   Clock, 
-  Vote, 
+  CheckCircle2, 
   ArrowLeft, 
   LogOut, 
   Loader2,
@@ -91,7 +91,7 @@ export default function Profile() {
     return (
       <>
         <Head>
-          <title>Profile - VotePlatform</title>
+          <title>Profile - Votesy</title>
         </Head>
         <div className="loading-container" style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
           <div className="loading-spinner"></div>
@@ -105,7 +105,7 @@ export default function Profile() {
   return (
     <>
       <Head>
-        <title>Profile - VotePlatform</title>
+        <title>Profile - Votesy</title>
       </Head>
 
       <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
@@ -125,9 +125,9 @@ export default function Profile() {
             
             <Link href="/" className="navbar-brand">
               <div className="navbar-logo">
-                <Vote size={18} color="white" />
+                <CheckCircle2 size={18} color="white" />
               </div>
-              <span>VotePlatform</span>
+              <span>Votesy</span>
             </Link>
 
             <button
@@ -397,7 +397,7 @@ export default function Profile() {
             ) : (
               <div className="empty-state" style={{ padding: '48px 24px' }}>
                 <div className="empty-state-icon">
-                  <Vote size={32} />
+                  <CheckCircle2 size={32} />
                 </div>
                 <h3 className="empty-state-title">No votes yet</h3>
                 <p className="empty-state-description">

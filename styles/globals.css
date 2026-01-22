@@ -20,7 +20,7 @@
   --border-subtle: rgba(255, 255, 255, 0.06);
   --border-default: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.15);
-  --border-focus: rgba(99, 102, 241, 0.5);
+  --border-focus: rgba(34, 197, 94, 0.5);
   
   /* Text Colors */
   --text-primary: #fafafa;
@@ -29,9 +29,9 @@
   --text-muted: #52525b;
   
   /* Brand Colors */
-  --brand-primary: #6366f1;
-  --brand-primary-hover: #818cf8;
-  --brand-secondary: #8b5cf6;
+  --brand-primary: #22c55e;
+  --brand-primary-hover: #4ade80;
+  --brand-secondary: #16a34a;
   --brand-accent: #06b6d4;
   
   /* Semantic Colors */
@@ -52,9 +52,9 @@
   --info-border: rgba(59, 130, 246, 0.2);
   
   /* Gradients */
-  --gradient-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-  --gradient-brand-subtle: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-  --gradient-glow: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.1), transparent 40%);
+  --gradient-brand: linear-gradient(135deg, #22c55e 0%, #16a34a 50%, #15803d 100%);
+  --gradient-brand-subtle: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.1) 100%);
+  --gradient-glow: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(34, 197, 94, 0.1), transparent 40%);
   --gradient-card: linear-gradient(180deg, var(--surface-2) 0%, var(--surface-1) 100%);
   --gradient-shine: linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.05) 50%, transparent 75%);
   
@@ -64,8 +64,8 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7), 0 8px 16px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
-  --shadow-glow-lg: 0 0 80px rgba(99, 102, 241, 0.2);
+  --shadow-glow: 0 0 40px rgba(34, 197, 94, 0.15);
+  --shadow-glow-lg: 0 0 80px rgba(34, 197, 94, 0.2);
   
   /* Spacing */
   --radius-xs: 6px;
@@ -181,7 +181,7 @@ img {
 
 /* === SELECTION === */
 ::selection {
-  background: rgba(99, 102, 241, 0.3);
+  background: rgba(34, 197, 94, 0.3);
   color: var(--text-primary);
 }
 
@@ -238,8 +238,8 @@ img {
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.4); }
+  0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.4); }
 }
 
 @keyframes gradient-shift {
@@ -291,7 +291,7 @@ img {
 
 /* === UTILITY CLASSES === */
 .text-gradient {
-  background: var(--gradient-brand);
+  background: linear-gradient(135deg, #22c55e 0%, #06b6d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -399,9 +399,9 @@ img {
   width: 200%;
   height: 200%;
   background: 
-    radial-gradient(ellipse 50% 50% at 20% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 30% 30% at 50% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+    radial-gradient(ellipse 50% 50% at 20% 20%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 30% 30% at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
   animation: float 20s ease-in-out infinite;
   pointer-events: none;
 }
@@ -490,7 +490,7 @@ img {
 .btn-gradient {
   width: 100%;
   padding: 14px 24px;
-  background: var(--gradient-brand);
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -505,7 +505,7 @@ img {
 .btn-gradient:hover:not(:disabled) {
   opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 8px 32px rgba(34, 197, 94, 0.4);
 }
 
 .btn-secondary {
@@ -627,7 +627,7 @@ img {
 .input-field:focus {
   border-color: var(--brand-primary);
   background: var(--surface-2);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
   outline: none;
 }
 
@@ -738,9 +738,9 @@ select.input-field {
 }
 
 .badge-primary {
-  background: rgba(99, 102, 241, 0.15);
-  color: #a5b4fc;
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  background: rgba(34, 197, 94, 0.15);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
 .badge-success {
@@ -1107,8 +1107,8 @@ tr:hover td {
   width: 150%;
   height: 100%;
   background: 
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 50% at 80% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 50% at 80% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -1282,7 +1282,7 @@ tr:hover td {
 /* === CTA SECTION === */
 .cta-section {
   background: var(--gradient-brand-subtle);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.2);
   border-radius: var(--radius-2xl);
   padding: 48px;
   text-align: center;

@@ -54,7 +54,7 @@ export default function Reset() {
     return (
       <>
         <Head>
-          <title>Password Reset - VotePlatform</title>
+          <title>Password Reset - Votesy</title>
         </Head>
         <div className="auth-container">
           <div className="auth-card" style={{ textAlign: 'center' }}>
@@ -88,7 +88,7 @@ export default function Reset() {
               <div style={{
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(90deg, #06b6d4, #a855f7)',
+                background: 'linear-gradient(90deg, #22c55e, #16a34a)',
                 animation: 'progress 3s ease-out forwards'
               }} />
             </div>
@@ -107,7 +107,7 @@ export default function Reset() {
   return (
     <>
       <Head>
-        <title>Reset Password - VotePlatform</title>
+        <title>Reset Password - Votesy</title>
       </Head>
 
       <div className="auth-container">
@@ -117,13 +117,13 @@ export default function Reset() {
             <div style={{
               width: 56,
               height: 56,
-              background: 'linear-gradient(135deg, #06b6d4 0%, #a855f7 100%)',
+              background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
               borderRadius: 16,
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: 24,
-              boxShadow: '0 10px 40px rgba(6, 182, 212, 0.3)'
+              boxShadow: '0 10px 40px rgba(34, 197, 94, 0.3)'
             }}>
               <ShieldCheck size={28} color="white" />
             </div>

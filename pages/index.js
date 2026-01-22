@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
-import { 
-  Users, 
-  Vote, 
-  ArrowRight, 
-  Sparkles, 
-  Zap, 
-  Shield, 
+import {
+  Users,
+  CheckCircle2,
+  ArrowRight,
+  Sparkles,
+  Zap,
+  Shield,
   BarChart3,
   CheckCircle,
   Globe,
@@ -49,7 +49,7 @@ export default function Home() {
   };
 
   return (
-    <Layout title="VotePlatform - Professional Voting Platform">
+    <Layout title="Votesy - Professional Voting Platform">
       {/* Hero Section */}
       <section className="hero">
         {/* Background Effects */}
@@ -66,7 +66,7 @@ export default function Home() {
             transform: 'translateX(-50%)',
             width: '140%',
             height: '100%',
-            background: 'radial-gradient(ellipse 50% 80% at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 60%)',
+            background: 'radial-gradient(ellipse 50% 80% at 50% 0%, rgba(34, 197, 94, 0.15) 0%, transparent 60%)',
           }} />
           <div style={{
             position: 'absolute',
@@ -74,7 +74,7 @@ export default function Home() {
             right: '-10%',
             width: '40%',
             height: '60%',
-            background: 'radial-gradient(circle at center, rgba(139, 92, 246, 0.1) 0%, transparent 60%)',
+            background: 'radial-gradient(circle at center, rgba(6, 182, 212, 0.1) 0%, transparent 60%)',
             filter: 'blur(40px)',
           }} />
         </div>
@@ -86,48 +86,18 @@ export default function Home() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{ textAlign: 'center', maxWidth: 900, margin: '0 auto' }}
           >
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1 }}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '6px 16px 6px 8px',
-                background: 'var(--gradient-brand-subtle)',
-                border: '1px solid rgba(99, 102, 241, 0.2)',
-                borderRadius: 'var(--radius-full)',
-                marginBottom: 32,
-              }}
-            >
-              <span style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 24,
-                height: 24,
-                background: 'var(--gradient-brand)',
-                borderRadius: '50%',
-              }}>
-                <Sparkles size={12} color="white" />
-              </span>
-              <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>
-                Trusted by 10,000+ voters
-              </span>
-            </motion.div>
+
 
             <h1 className="hero-title">
               The Modern Way to{' '}
               <span className="text-gradient">Collect Votes</span>
             </h1>
-            
+
             <p className="hero-subtitle">
-              Create professional voting campaigns, collect votes securely, and 
+              Create professional voting campaigns, collect votes securely, and
               visualize results in real-time. Built for teams who value transparency.
             </p>
-            
+
             {!session && status !== 'loading' && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -232,41 +202,41 @@ export default function Home() {
               className="feature-grid"
             >
               {[
-                { 
-                  icon: Zap, 
-                  title: 'Real-time Results', 
+                {
+                  icon: Zap,
+                  title: 'Real-time Results',
                   desc: 'Watch votes come in live with instant updates and beautiful visualizations',
                   gradient: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)'
                 },
-                { 
-                  icon: Shield, 
-                  title: 'Secure & Verified', 
+                {
+                  icon: Shield,
+                  title: 'Secure & Verified',
                   desc: 'LinkedIn verification ensures one authentic vote per person',
-                  gradient: 'linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%)'
+                  gradient: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
                 },
-                { 
-                  icon: BarChart3, 
-                  title: 'Advanced Analytics', 
+                {
+                  icon: BarChart3,
+                  title: 'Advanced Analytics',
                   desc: 'Get detailed insights with comprehensive voting analytics',
                   gradient: 'linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)'
                 },
-                { 
-                  icon: Globe, 
-                  title: 'Shareable Links', 
+                {
+                  icon: Globe,
+                  title: 'Shareable Links',
                   desc: 'Share your voting page with a simple link. Works everywhere.',
                   gradient: 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)'
                 },
-                { 
-                  icon: Lock, 
-                  title: 'Privacy First', 
+                {
+                  icon: Lock,
+                  title: 'Privacy First',
                   desc: 'Your data is encrypted and protected. We never sell your information.',
                   gradient: 'linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)'
                 },
-                { 
-                  icon: Users, 
-                  title: 'Team Collaboration', 
+                {
+                  icon: Users,
+                  title: 'Team Collaboration',
                   desc: 'Invite team members and manage campaigns together seamlessly.',
-                  gradient: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)'
+                  gradient: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)'
                 },
               ].map((feature, i) => (
                 <motion.div
@@ -274,7 +244,7 @@ export default function Home() {
                   variants={fadeInUp}
                   className="feature-card"
                 >
-                  <div 
+                  <div
                     className="feature-icon"
                     style={{ background: feature.gradient }}
                   >
@@ -306,7 +276,7 @@ export default function Home() {
                   alignItems: 'center',
                   gap: 8,
                   padding: '14px 28px',
-                  background: 'var(--gradient-brand)',
+                  background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
                   color: 'white',
                   fontWeight: 600,
                   fontSize: 15,
@@ -315,7 +285,7 @@ export default function Home() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-glow)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(34, 197, 94, 0.4)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
@@ -342,13 +312,13 @@ export default function Home() {
               <div style={{
                 width: 48,
                 height: 48,
-                background: 'var(--gradient-brand)',
+                background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
                 borderRadius: 'var(--radius-lg)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-                <Vote size={24} color="white" />
+                <CheckCircle2 size={24} color="white" />
               </div>
               <div>
                 <h2 className="section-title">Active Campaigns</h2>
@@ -394,14 +364,14 @@ export default function Home() {
                     <p className="team-card-description line-clamp-2">
                       {team.description || 'Vote for your preferred candidate from this team'}
                     </p>
-                    
+
                     <div className="team-card-meta">
                       <div className="team-card-stat">
                         <Users size={16} />
                         <span>{team.candidates?.length || 0} Candidates</span>
                       </div>
                       <div className="team-card-stat">
-                        <Vote size={16} />
+                        <CheckCircle2 size={16} />
                         <span>{team.totalVotes || 0} Votes</span>
                       </div>
                     </div>
@@ -425,7 +395,7 @@ export default function Home() {
               }}
             >
               <div className="empty-state-icon">
-                <Vote size={32} />
+                <CheckCircle2 size={32} />
               </div>
               <h3 className="empty-state-title">No active campaigns yet</h3>
               <p className="empty-state-description">
@@ -456,6 +426,348 @@ export default function Home() {
               </Link>
             </motion.div>
           )}
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            style={{
+              background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%)',
+              border: '1px solid rgba(34, 197, 94, 0.2)',
+              borderRadius: 'var(--radius-xl)',
+              padding: '48px 32px',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Background decoration */}
+            <div style={{
+              position: 'absolute',
+              top: '-50%',
+              right: '-20%',
+              width: '60%',
+              height: '200%',
+              background: 'radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 60%)',
+              filter: 'blur(60px)',
+              pointerEvents: 'none',
+            }} />
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: 32,
+              position: 'relative',
+              zIndex: 1,
+            }}>
+              {[
+                { value: '50K+', label: 'Active Voters', icon: Users },
+                { value: '1M+', label: 'Votes Cast', icon: CheckCircle2 },
+                { value: '99.9%', label: 'Uptime', icon: Zap },
+                { value: '500+', label: 'Campaigns', icon: BarChart3 },
+              ].map((stat, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  style={{ textAlign: 'center' }}
+                >
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 48,
+                    height: 48,
+                    background: 'rgba(34, 197, 94, 0.15)',
+                    borderRadius: 'var(--radius-md)',
+                    marginBottom: 16,
+                  }}>
+                    <stat.icon size={24} style={{ color: '#4ade80' }} />
+                  </div>
+                  <div style={{
+                    fontSize: 36,
+                    fontWeight: 700,
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    color: 'var(--text-primary)',
+                    marginBottom: 4,
+                  }}>
+                    {stat.value}
+                  </div>
+                  <div style={{
+                    fontSize: 14,
+                    color: 'var(--text-tertiary)',
+                  }}>
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="section">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            style={{ textAlign: 'center', marginBottom: 48 }}
+          >
+            <h2 style={{
+              fontSize: 32,
+              fontWeight: 700,
+              fontFamily: "'Space Grotesk', sans-serif",
+              color: 'var(--text-primary)',
+              marginBottom: 12,
+            }}>
+              How <span style={{ color: '#4ade80' }}>Votesy</span> Works
+            </h2>
+            <p style={{
+              fontSize: 16,
+              color: 'var(--text-tertiary)',
+              maxWidth: 500,
+              margin: '0 auto',
+            }}>
+              Create your voting campaign in three simple steps
+            </p>
+          </motion.div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: 24,
+          }}>
+            {[
+              {
+                step: '01',
+                title: 'Create Campaign',
+                description: 'Sign up as a candidate and set up your voting campaign with custom options.',
+                color: '#22c55e',
+              },
+              {
+                step: '02',
+                title: 'Share Link',
+                description: 'Share your unique voting link with your audience via any platform.',
+                color: '#06b6d4',
+              },
+              {
+                step: '03',
+                title: 'Collect Votes',
+                description: 'Watch votes come in real-time with verified LinkedIn users.',
+                color: '#06b6d4',
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+                style={{
+                  background: 'var(--bg-elevated)',
+                  border: '1px solid var(--border-subtle)',
+                  borderRadius: 'var(--radius-xl)',
+                  padding: 32,
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                <div style={{
+                  position: 'absolute',
+                  top: 16,
+                  right: 16,
+                  fontSize: 64,
+                  fontWeight: 800,
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  color: item.color,
+                  opacity: 0.1,
+                  lineHeight: 1,
+                }}>
+                  {item.step}
+                </div>
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 40,
+                  height: 40,
+                  background: `${item.color}20`,
+                  borderRadius: 'var(--radius-md)',
+                  marginBottom: 20,
+                  color: item.color,
+                  fontSize: 16,
+                  fontWeight: 700,
+                }}>
+                  {item.step}
+                </div>
+                <h3 style={{
+                  fontSize: 18,
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  marginBottom: 8,
+                }}>
+                  {item.title}
+                </h3>
+                <p style={{
+                  fontSize: 14,
+                  color: 'var(--text-tertiary)',
+                  lineHeight: 1.6,
+                }}>
+                  {item.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="section">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            style={{
+              background: 'linear-gradient(135deg, #0a1f1a 0%, #0f1f2a 100%)',
+              borderRadius: 'var(--radius-xl)',
+              padding: '64px 32px',
+              textAlign: 'center',
+              position: 'relative',
+              overflow: 'hidden',
+              border: '1px solid rgba(34, 197, 94, 0.2)',
+            }}
+          >
+            {/* Background orbs */}
+            <div style={{
+              position: 'absolute',
+              top: '-20%',
+              left: '10%',
+              width: 300,
+              height: 300,
+              background: 'radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, transparent 70%)',
+              filter: 'blur(60px)',
+              pointerEvents: 'none',
+            }} />
+            <div style={{
+              position: 'absolute',
+              bottom: '-20%',
+              right: '10%',
+              width: 250,
+              height: 250,
+              background: 'radial-gradient(circle, rgba(6, 182, 212, 0.25) 0%, transparent 70%)',
+              filter: 'blur(60px)',
+              pointerEvents: 'none',
+            }} />
+
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <motion.div
+                initial={{ scale: 0.9 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 64,
+                  height: 64,
+                  background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                  borderRadius: 16,
+                  marginBottom: 24,
+                  boxShadow: '0 20px 60px rgba(34, 197, 94, 0.3)',
+                }}
+              >
+                <CheckCircle2 size={32} color="white" />
+              </motion.div>
+
+              <h2 style={{
+                fontSize: 36,
+                fontWeight: 700,
+                fontFamily: "'Space Grotesk', sans-serif",
+                color: 'white',
+                marginBottom: 16,
+              }}>
+                Ready to Start Voting?
+              </h2>
+              <p style={{
+                fontSize: 18,
+                color: 'rgba(255, 255, 255, 0.6)',
+                maxWidth: 500,
+                margin: '0 auto 32px',
+                lineHeight: 1.6,
+              }}>
+                Join thousands of organizations using Votesy to make decisions that matter.
+              </p>
+
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 16,
+                justifyContent: 'center',
+              }}>
+                <Link
+                  href="/signup"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    padding: '16px 32px',
+                    background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                    color: 'white',
+                    fontWeight: 600,
+                    fontSize: 16,
+                    borderRadius: 'var(--radius-lg)',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 4px 24px rgba(34, 197, 94, 0.3)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(34, 197, 94, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 24px rgba(34, 197, 94, 0.3)';
+                  }}
+                >
+                  Get Started Free <ArrowRight size={18} />
+                </Link>
+                <Link
+                  href="/candidate/signup"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    padding: '16px 32px',
+                    background: 'transparent',
+                    color: 'white',
+                    fontWeight: 600,
+                    fontSize: 16,
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    transition: 'all 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  }}
+                >
+                  Register as Candidate
+                </Link>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </Layout>

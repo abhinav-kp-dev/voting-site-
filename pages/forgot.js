@@ -25,7 +25,7 @@ export default function Forgot() {
   return (
     <>
       <Head>
-        <title>Forgot Password - VotePlatform</title>
+        <title>Forgot Password - Votesy</title>
       </Head>
 
       <div className="auth-container">
@@ -37,7 +37,7 @@ export default function Forgot() {
               height: 56,
               background: sent 
                 ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
-                : 'linear-gradient(135deg, #06b6d4 0%, #a855f7 100%)',
+                : 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
               borderRadius: 16,
               display: 'inline-flex',
               alignItems: 'center',
@@ -45,7 +45,7 @@ export default function Forgot() {
               marginBottom: 24,
               boxShadow: sent 
                 ? '0 10px 40px rgba(34, 197, 94, 0.3)'
-                : '0 10px 40px rgba(6, 182, 212, 0.3)'
+                : '0 10px 40px rgba(34, 197, 94, 0.3)'
             }}>
               {sent ? (
                 <CheckCircle size={28} color="white" />

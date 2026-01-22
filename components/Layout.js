@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { Vote, User, LogOut, Menu, X, ChevronDown } from 'lucide-react';
+import { CheckCircle2, User, LogOut, Menu, X, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Layout({ children, title = 'VotePlatform' }) {
+export default function Layout({ children, title = 'Votesy' }) {
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -34,7 +34,7 @@ export default function Layout({ children, title = 'VotePlatform' }) {
 
       <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
         {/* Navigation */}
-        <nav 
+        <nav
           className="navbar"
           style={{
             background: scrolled ? 'rgba(9, 9, 11, 0.95)' : 'rgba(9, 9, 11, 0.8)',
@@ -44,10 +44,7 @@ export default function Layout({ children, title = 'VotePlatform' }) {
           <div className="navbar-inner">
             {/* Logo */}
             <Link href="/" className="navbar-brand">
-              <div className="navbar-logo">
-                <Vote size={18} color="white" />
-              </div>
-              <span>VotePlatform</span>
+              <span>Votesy</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -55,7 +52,7 @@ export default function Layout({ children, title = 'VotePlatform' }) {
               <Link href="/" className="navbar-link">
                 Home
               </Link>
-              
+
               {session ? (
                 <>
                   {session.user.role === 'candidate' && (
@@ -63,7 +60,7 @@ export default function Layout({ children, title = 'VotePlatform' }) {
                       Dashboard
                     </Link>
                   )}
-                  
+
                   {/* User Menu */}
                   <div style={{ position: 'relative', marginLeft: 8 }}>
                     <button
@@ -109,11 +106,11 @@ export default function Layout({ children, title = 'VotePlatform' }) {
                       </span>
                       <ChevronDown size={14} style={{ color: 'var(--text-muted)' }} />
                     </button>
-                    
+
                     <AnimatePresence>
                       {userMenuOpen && (
                         <>
-                          <div 
+                          <div
                             style={{ position: 'fixed', inset: 0, zIndex: 40 }}
                             onClick={() => setUserMenuOpen(false)}
                           />
@@ -143,7 +140,7 @@ export default function Layout({ children, title = 'VotePlatform' }) {
                                 {session.user.email}
                               </div>
                             </div>
-                            
+
                             <div style={{ padding: 8 }}>
                               <Link
                                 href="/profile"
@@ -170,7 +167,7 @@ export default function Layout({ children, title = 'VotePlatform' }) {
                                 <User size={16} />
                                 Profile
                               </Link>
-                              
+
                               <button
                                 onClick={() => {
                                   setUserMenuOpen(false);
@@ -268,10 +265,10 @@ export default function Layout({ children, title = 'VotePlatform' }) {
                 <div style={{ padding: 16 }}>
                   {session ? (
                     <>
-                      <div style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: 12, 
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 12,
                         padding: 12,
                         marginBottom: 8,
                         background: 'var(--surface-1)',
@@ -296,7 +293,7 @@ export default function Layout({ children, title = 'VotePlatform' }) {
                           <div style={{ fontSize: 13, color: 'var(--text-tertiary)' }}>{session.user.email}</div>
                         </div>
                       </div>
-                      
+
                       <Link
                         href="/"
                         onClick={() => setMobileMenuOpen(false)}
@@ -407,21 +404,10 @@ export default function Layout({ children, title = 'VotePlatform' }) {
         <footer className="footer">
           <div className="footer-inner">
             <div className="footer-brand">
-              <div style={{
-                width: 28,
-                height: 28,
-                background: 'var(--gradient-brand)',
-                borderRadius: 'var(--radius-sm)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Vote size={14} color="white" />
-              </div>
-              <span>VotePlatform</span>
+              <span>Votesy</span>
             </div>
             <p className="footer-text">
-              © {new Date().getFullYear()} VotePlatform. All rights reserved.
+              © {new Date().getFullYear()} Votesy. All rights reserved.
             </p>
           </div>
         </footer>

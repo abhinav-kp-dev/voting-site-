@@ -4,15 +4,15 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Vote, 
-  Plus, 
-  LogOut, 
-  Users, 
-  BarChart3, 
-  ExternalLink, 
-  Pencil, 
-  Trash2, 
+import {
+  CheckCircle2,
+  Plus,
+  LogOut,
+  Users,
+  BarChart3,
+  ExternalLink,
+  Pencil,
+  Trash2,
   Loader2,
   Sparkles,
   ArrowRight,
@@ -30,9 +30,14 @@ export default function CandidateDashboard() {
     if (status === 'unauthenticated') {
       router.push('/candidate/login');
     } else if (status === 'authenticated') {
-      fetchTeams();
+      // Check if user has LinkedIn profile (required for candidates)
+      if (!session?.user?.linkedin) {
+        router.push('/candidate/complete-profile');
+      } else {
+        fetchTeams();
+      }
     }
-  }, [status, router]);
+  }, [status, router, session]);
 
   async function fetchTeams() {
     const res = await fetch('/api/candidate/teams');
@@ -59,7 +64,7 @@ export default function CandidateDashboard() {
     return (
       <>
         <Head>
-          <title>Dashboard - VotePlatform</title>
+          <title>Dashboard - Votesy</title>
         </Head>
         <div className="loading-container" style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
           <div className="loading-spinner"></div>
@@ -71,7 +76,7 @@ export default function CandidateDashboard() {
   return (
     <>
       <Head>
-        <title>Candidate Dashboard - VotePlatform</title>
+        <title>Candidate Dashboard - Votesy</title>
       </Head>
 
       <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
@@ -81,20 +86,20 @@ export default function CandidateDashboard() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <Link href="/" className="navbar-brand">
                 <div className="navbar-logo">
-                  <Vote size={18} color="white" />
+                  <CheckCircle2 size={18} color="white" />
                 </div>
-                <span>VotePlatform</span>
+                <span>Votesy</span>
               </Link>
               <span className="badge badge-primary" style={{ marginLeft: 4 }}>
                 Candidate
               </span>
             </div>
-            
+
             <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
               <span style={{ fontSize: 14, color: 'var(--text-tertiary)' }}>
                 {session?.user?.name || session?.user?.email}
               </span>
-              <button 
+              <button
                 onClick={() => signOut({ callbackUrl: '/' })}
                 className="btn-ghost"
                 style={{ display: 'flex', alignItems: 'center', gap: 8 }}
@@ -109,9 +114,9 @@ export default function CandidateDashboard() {
         {/* Main Content */}
         <main className="container" style={{ paddingTop: 40, paddingBottom: 80 }}>
           {/* Page Header */}
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'flex-start', 
+          <div style={{
+            display: 'flex',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
             marginBottom: 40,
             flexWrap: 'wrap',
@@ -121,9 +126,9 @@ export default function CandidateDashboard() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              <h1 style={{ 
-                fontSize: 28, 
-                fontWeight: 700, 
+              <h1 style={{
+                fontSize: 28,
+                fontWeight: 700,
                 marginBottom: 8,
                 fontFamily: 'Space Grotesk, Sora, sans-serif',
               }}>
@@ -133,13 +138,13 @@ export default function CandidateDashboard() {
                 Manage your voting campaigns and track results
               </p>
             </motion.div>
-            
+
             <motion.button
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               onClick={() => router.push('/candidate/create-team')}
               className="btn-gradient"
-              style={{ 
+              style={{
                 width: 'auto',
                 padding: '12px 24px',
                 display: 'flex',
@@ -165,9 +170,9 @@ export default function CandidateDashboard() {
               }}
             >
               <div className="stat-card">
-                <div style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'space-between',
                   marginBottom: 12,
                 }}>
@@ -175,22 +180,22 @@ export default function CandidateDashboard() {
                     width: 40,
                     height: 40,
                     borderRadius: 'var(--radius-md)',
-                    background: 'rgba(99, 102, 241, 0.1)',
+                    background: 'rgba(34, 197, 94, 0.12)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                    <Vote size={20} style={{ color: 'var(--brand-primary)' }} />
+                    <CheckCircle2 size={20} style={{ color: 'var(--brand-primary)' }} />
                   </div>
                 </div>
                 <div className="stat-value">{teams.length}</div>
                 <div className="stat-label">Total Campaigns</div>
               </div>
-              
+
               <div className="stat-card">
-                <div style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'space-between',
                   marginBottom: 12,
                 }}>
@@ -209,11 +214,11 @@ export default function CandidateDashboard() {
                 <div className="stat-value">{getTotalVotes()}</div>
                 <div className="stat-label">Total Votes</div>
               </div>
-              
+
               <div className="stat-card">
-                <div style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'space-between',
                   marginBottom: 12,
                 }}>
@@ -221,12 +226,12 @@ export default function CandidateDashboard() {
                     width: 40,
                     height: 40,
                     borderRadius: 'var(--radius-md)',
-                    background: 'rgba(139, 92, 246, 0.1)',
+                    background: 'rgba(6, 182, 212, 0.12)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                    <Users size={20} style={{ color: 'var(--brand-secondary)' }} />
+                    <Users size={20} style={{ color: 'var(--brand-accent)' }} />
                   </div>
                 </div>
                 <div className="stat-value">{getTotalCandidates()}</div>
@@ -261,27 +266,27 @@ export default function CandidateDashboard() {
                   }}
                 >
                   <div style={{ marginBottom: 20 }}>
-                    <h3 style={{ 
-                      fontSize: 18, 
-                      fontWeight: 700, 
+                    <h3 style={{
+                      fontSize: 18,
+                      fontWeight: 700,
                       marginBottom: 4,
                       fontFamily: 'Space Grotesk, Sora, sans-serif',
                     }}>
                       {team.name}
                     </h3>
-                    <p style={{ 
-                      fontSize: 13, 
+                    <p style={{
+                      fontSize: 13,
                       color: 'var(--text-muted)',
                       fontFamily: 'monospace',
                     }}>
                       /team/{team.slug}
                     </p>
                   </div>
-                  
+
                   {/* Stats */}
-                  <div style={{ 
-                    display: 'flex', 
-                    gap: 24, 
+                  <div style={{
+                    display: 'flex',
+                    gap: 24,
                     marginBottom: 20,
                     paddingBottom: 20,
                     borderBottom: '1px solid var(--border-subtle)',
@@ -291,12 +296,12 @@ export default function CandidateDashboard() {
                         width: 40,
                         height: 40,
                         borderRadius: 'var(--radius-md)',
-                        background: 'rgba(139, 92, 246, 0.1)',
+                        background: 'rgba(6, 182, 212, 0.12)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}>
-                        <Users size={18} style={{ color: 'var(--brand-secondary)' }} />
+                        <Users size={18} style={{ color: 'var(--brand-accent)' }} />
                       </div>
                       <div>
                         <div style={{ fontSize: 20, fontWeight: 700 }}>
@@ -329,14 +334,14 @@ export default function CandidateDashboard() {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Actions */}
                   <div style={{ display: 'flex', gap: 8 }}>
-                    <Link 
+                    <Link
                       href={`/candidate/edit-team/${team.slug}`}
                       className="btn-secondary"
-                      style={{ 
-                        flex: 1, 
+                      style={{
+                        flex: 1,
                         padding: '10px 16px',
                         display: 'flex',
                         alignItems: 'center',
@@ -348,12 +353,12 @@ export default function CandidateDashboard() {
                       <Pencil size={14} />
                       Edit
                     </Link>
-                    <Link 
+                    <Link
                       href={`/team/${team.slug}`}
                       target="_blank"
                       className="btn-primary"
-                      style={{ 
-                        flex: 1, 
+                      style={{
+                        flex: 1,
                         padding: '10px 16px',
                         display: 'flex',
                         alignItems: 'center',
@@ -365,7 +370,7 @@ export default function CandidateDashboard() {
                       <ExternalLink size={14} />
                       View
                     </Link>
-                    <button 
+                    <button
                       onClick={() => deleteTeam(team.slug)}
                       style={{
                         padding: '10px 12px',
@@ -410,10 +415,10 @@ export default function CandidateDashboard() {
               <p className="empty-state-description">
                 Create your first voting campaign to start collecting votes from your community.
               </p>
-              <button 
+              <button
                 onClick={() => router.push('/candidate/create-team')}
                 className="btn-gradient"
-                style={{ 
+                style={{
                   width: 'auto',
                   padding: '12px 24px',
                   display: 'inline-flex',

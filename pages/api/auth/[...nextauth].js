@@ -21,10 +21,10 @@ export const authOptions = {
           if (!user || !user.password) return null;
           const valid = await bcrypt.compare(credentials.password, user.password);
           if (!valid) return null;
-          return { 
-            id: user._id.toString(), 
-            name: user.name, 
-            email: user.email, 
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
             image: user.image,
             linkedin: user.linkedin
           };
@@ -89,20 +89,66 @@ export const authOptions = {
     async signIn({ user, account, profile }) {
       console.log('SignIn callback - Provider:', account.provider);
       console.log('SignIn callback - User:', user);
+
+      // Handle OAuth sign-ins (Google, LinkedIn)
+      if (account.provider === 'google' || account.provider === 'linkedin') {
+        try {
+          const client = await clientPromise;
+          const users = client.db().collection('users');
+
+          // Check if user exists
+          let existingUser = await users.findOne({ email: user.email });
+
+          if (!existingUser) {
+            // Create new user for OAuth sign-in
+            await users.insertOne({
+              name: user.name,
+              email: user.email,
+              image: user.image,
+              linkedin: user.linkedin || null,
+              role: null, // Will be set when they complete profile
+              provider: account.provider,
+              createdAt: new Date()
+            });
+          }
+        } catch (error) {
+          console.error('Error in signIn callback:', error);
+        }
+      }
+
       return true;
     },
-    
+
     async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
         token.provider = account?.provider;
       }
+
+      // Fetch latest user data from database to get role and LinkedIn
+      if (token.email) {
+        try {
+          const client = await clientPromise;
+          const users = client.db().collection('users');
+          const dbUser = await users.findOne({ email: token.email });
+
+          if (dbUser) {
+            token.role = dbUser.role;
+            token.linkedin = dbUser.linkedin;
+          }
+        } catch (error) {
+          console.error('Error fetching user in jwt callback:', error);
+        }
+      }
+
       return token;
     },
-    
+
     async session({ session, token }) {
       session.user.id = token.id;
       session.user.provider = token.provider;
+      session.user.role = token.role;
+      session.user.linkedin = token.linkedin;
       return session;
     }
   }

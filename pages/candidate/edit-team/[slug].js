@@ -14,7 +14,7 @@ import {
   Download, 
   FileSpreadsheet,
   FileJson,
-  Vote,
+  CheckCircle2,
   User,
   Lock
 } from 'lucide-react';
@@ -130,7 +130,7 @@ export default function EditTeam() {
     return (
       <>
         <Head>
-          <title>Edit Campaign - VotePlatform</title>
+          <title>Edit Campaign - Votesy</title>
         </Head>
         <div className="loading-container" style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
           <div className="loading-spinner"></div>
@@ -142,7 +142,7 @@ export default function EditTeam() {
   return (
     <>
       <Head>
-        <title>Edit Campaign - VotePlatform</title>
+        <title>Edit Campaign - Votesy</title>
       </Head>
 
       <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
@@ -160,9 +160,9 @@ export default function EditTeam() {
             
             <Link href="/" className="navbar-brand">
               <div className="navbar-logo">
-                <Vote size={18} color="white" />
+                <CheckCircle2 size={18} color="white" />
               </div>
-              <span>VotePlatform</span>
+              <span>Votesy</span>
             </Link>
             
             <div style={{ width: 150 }}></div>
@@ -469,7 +469,7 @@ export default function EditTeam() {
                   style={{ 
                     width: 'auto',
                     padding: '14px 32px',
-                    background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
+                    background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: 8,
